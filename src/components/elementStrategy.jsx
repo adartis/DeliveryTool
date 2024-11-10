@@ -1,7 +1,7 @@
 // src/components/Strategy.jsx
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addStrategyItem, removeStrategyItem } from '/src/redux/strategySlice.js';
+import { addStrategyItem, removeStrategyItem } from '../redux/strategySlice.js';
 
 const ElementStrategy = () => {
     const [strategyTitle, setStrategyTitle] = useState('');
