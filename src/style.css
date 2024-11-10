@@ -1,0 +1,252 @@
+/* src/components/style.css */
+.banner {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    background-color: #b00052; /* Choose any colour you like */
+    height: 10vh; /* Takes up 10% of the viewport height */
+    justify-content: space-between;
+  }
+  
+  .banner h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color:#F2E8D5;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .banner button {
+    background-color: #F2E8D5;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-right: 60px;
+    font-family: 'Nunito', sans-serif;
+    width: 150px;
+    font-weight: bold;
+
+  }
+  
+  .banner button:hover {
+    background-color: #bed3d3;
+  }
+
+  .leftPanel {
+    position: fixed;
+    top: 10vh;
+    width: 10%;
+    height: 85vh; /* Takes up 15% of the viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the start of the panel */
+    padding: 20px;           /* Internal padding for panel content */
+    background-color: #b00052; /* Background color of the panel */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow for depth */
+    z-index: 1000;           /* Keeps the panel above other elements */
+    justify-content: space-between;
+  }
+
+  .leftPanel h3 {
+    font-size: 1rem;
+    color:#F2E8D5;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .leftPanel button {
+    background-color: #F2E8D5;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-right: 60px;
+    font-family: 'Nunito', sans-serif;
+    width: 120px;
+    font-weight: bold;
+
+  }
+  
+  .leftPanel button:hover {
+    background-color: #bed3d3;
+  }
+
+  .middlePanel {
+    padding-left: 15%;
+    padding-top: 5%;
+    padding-right: 15%;
+    background-color: #F2E8D5;
+  }
+
+  .rowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 45%;
+    gap: 10px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #F2E8D5;
+    border: 1px solid #333;
+    border-color: #b00052;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Remove width: 100% to let the container adapt to content */
+}
+
+
+.interventionTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.interventionTable th, .interventionTable td {
+    border: 1px solid #333;
+    padding: 8px;
+    text-align: left;
+}
+
+.interventionTable th {
+    background-color: #b00052;
+    color: #F2E8D5;
+    font-weight: bold;
+}
+
+.interventionTable td {
+    background-color: #F2E8D5;
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.scheduleTable th, .scheduleTable td {
+    border: 1px solid #333;
+    padding: 8px;
+    background-color: #b00052;
+    text-align: left;
+}
+
+.scheduleTable th {
+    background-color: #b00052;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.scheduleTable td {
+    background-color: #F2E8D5;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+    width: 50%; /* Adjust width as needed */
+}
+
+.formContainer label {
+    font-weight: bold;
+}
+
+/* Set the textarea to take up 40% of the row, and other inputs proportionally */
+.formContainer textarea {
+    flex: 0 0 40%; /* Takes up 40% of the row */
+    resize: vertical; /* Allows vertical resizing */
+    min-width: 80px; /* Ensures a reasonable minimum width */
+}
+
+.formContainer input, .formContainer select {
+    flex: 1; /* Flexes to take remaining space proportionally */
+    min-width: 120px; /* Sets a minimum width to avoid shrinking too small */
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+/* Make each label-input pair a column */
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px; /* Adds space between input groups */
+}
+
+.rowContainer {
+    display: flex;
+    flex-direction: column;
+}
+/* src/components/style.css */
+
+/* src/components/style.css */
+
+/* General table styling */
+.metrics-table {
+    border-collapse: collapse; /* Ensures borders are single lines, not doubled */
+    width: 100%;
+}
+
+/* Borders for table headers, cells, and rows */
+.metrics-th, .metrics-td {
+    border: 1px solid #333; /* Set the color and thickness of the gridlines */
+    padding: 8px;
+    max-width: 120px;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+/* Wrapping settings for headers */
+.metrics-th {
+    white-space: normal;
+    overflow-wrap: break-word;
+    padding: 8px;
+}
+
+/* Full-width input fields */
+.metrics-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* table containers */
+
+.table-container {
+    overflow-x: auto;
+    font-size: 0.85em; /* Smaller font size */
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #bed3d3;
+}
+
+.scheduleTable th, .scheduleTable td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.scheduleTable th:last-child, .scheduleTable td:last-child {
+    width: 50%; /* Rightmost column takes up 50% of the table width */
+}
+
+.gantt-bar {
+    height: 20px;
+    border-radius: 4px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.gantt-chart {
+    display: flex;
+    align-items: center;
+}
+
