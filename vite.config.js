@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/DeliveryTool/', // Replace with your actual repository name
+  base: '/DeliveryTool/', // Just the repository name with slashes
 });
