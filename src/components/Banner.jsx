@@ -1,13 +1,13 @@
 // src/components/Banner.jsx
 import React from 'react';
 
-const Banner = () => {
+const Banner = ({ onNavigate }) => {
   return (
     <div className="banner">
       <h1>Delivery Tool</h1>
-      <button>Home</button>
-      <button>Project Page</button>
-      <button>Instructions</button>
+      <button onClick={() => onNavigate('home')}>Home -TBC-</button>
+      <button onClick={() => onNavigate('project')}>Project Page <br/>-Current-</button>
+      <button onClick={() => onNavigate('instructions')}>Instructions -TBC-</button>
     </div>
   );
 };

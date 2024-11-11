@@ -57,7 +57,7 @@ const ElementInterventions = () => {
 
             {/* Display Interventions Table */}
             {selectedStrategy && interventionsByStrategy[selectedStrategy]?.length > 0 ? (
-                <table className="interventionTable">
+                <table className="generalTable">
                     <thead>
                         <tr>
                             <th>Title</th>

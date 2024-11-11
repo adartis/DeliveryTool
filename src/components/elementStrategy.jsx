@@ -49,7 +49,7 @@ const ElementStrategy = () => {
             <p>This section contains information about the strategy you are planning to implement.</p>
 
             {strategyItems.length > 0 ? (
-                <table className="scheduleTable">
+                <table className="generalTable">
                     <thead>
                         <tr>
                             <th>Title</th>

@@ -17,7 +17,23 @@ const ElementSchedule = () => {
     const [status, setStatus] = useState('Not started');
     const [editIndex, setEditIndex] = useState(null);
     const [editableRow, setEditableRow] = useState({});
+    const [globalDateRange, setGlobalDateRange] = useState({ minDate: null, maxDate: null });
 
+    /**
+     * useEffect hook: Monitors changes in schedule items and selected strategy.
+     * Recalculates the global date range (min and max dates across all items) 
+     * each time the strategy or its schedule items are updated.
+     */
+    useEffect(() => {
+        const range = getGlobalDateRange();
+        setGlobalDateRange(range);
+    }, [scheduleByStrategy, selectedStrategy]);
+
+    /**
+     * Adds a new schedule item associated with the currently selected strategy.
+     * Dispatches the addScheduleItem action, updating the Redux store,
+     * and resets the form fields to their initial state.
+     */
     const addNewScheduleItem = () => {
         if (selectedStrategy && title && description && startDate && endDate) {
             const newScheduleItem = { title, description, startDate, endDate, status };
@@ -26,40 +42,88 @@ const ElementSchedule = () => {
         }
     };
 
+    /**
+     * Sets the selected schedule item to be edited by updating the editIndex
+     * and populating editableRow with the item’s details, enabling inline editing.
+     */
     const handleEdit = (index, item) => {
         setEditIndex(index);
         setEditableRow({ ...item });
     };
 
+    /**
+     * Saves the edited schedule item by dispatching the updateScheduleItem action.
+     * Updates the item in the Redux store, then exits edit mode by clearing editIndex.
+     */
     const handleSave = (index) => {
         dispatch(updateScheduleItem({ strategyId: selectedStrategy, index, updatedItem: editableRow }));
         setEditIndex(null);
     };
 
+    /**
+     * Updates a field of the currently editable row.
+     * Takes the field name and value, setting the field in editableRow to the new value.
+     */
     const handleChange = (field, value) => setEditableRow({ ...editableRow, [field]: value });
 
+    /**
+     * Parses a date string (formatted as YYYY-MM-DD) and returns a Date object.
+     * Helper function to standardise date handling across components.
+     */
     const parseDate = (dateString) => new Date(dateString);
 
-    const calculateBarWidth = (start, end) => {
-        const oneDay = 1000 * 60 * 60 * 24;
-        return (parseDate(end) - parseDate(start)) / oneDay;
+    /**
+     * Calculates the global date range for the selected strategy.
+     * Returns the earliest start date and latest end date from all schedule items,
+     * facilitating the scaled rendering of Gantt bars across a fixed width.
+     */
+    const getGlobalDateRange = () => {
+        const dates = scheduleByStrategy[selectedStrategy]?.flatMap(item => [parseDate(item.startDate), parseDate(item.endDate)]);
+        return {
+            minDate: dates && dates.length > 0 ? new Date(Math.min(...dates)) : null,
+            maxDate: dates && dates.length > 0 ? new Date(Math.max(...dates)) : null,
+        };
     };
 
-    const calculateBarPosition = (start, minDate) => {
-        const oneDay = 1000 * 60 * 60 * 24;
-        return (parseDate(start) - parseDate(minDate)) / oneDay;
+    /**
+     * Calculates the width of a Gantt bar for a schedule item.
+     * Scales the bar’s width as a proportion of the total date range, fitting within a 40vw container.
+     * Returns 0 if there is no defined global date range.
+     */
+    const calculateScaledBarWidth = (start, end) => {
+        const { minDate, maxDate } = globalDateRange;
+        if (!minDate || !maxDate) return 0;
+        const totalRange = maxDate - minDate;
+        const barRange = parseDate(end) - parseDate(start);
+        return (barRange / totalRange) * 40; 
     };
 
-    const getEarliestDate = () => {
-        const dates = scheduleByStrategy[selectedStrategy]?.map(item => parseDate(item.startDate));
-        return dates && dates.length > 0 ? new Date(Math.min(...dates)) : new Date();
+    /**
+     * Calculates the horizontal position of a Gantt bar for a schedule item.
+     * Determines the offset from the start of the container, scaled within a 40vw width.
+     * Returns 0 if there is no defined global date range.
+     */
+    const calculateScaledBarPosition = (start) => {
+        const { minDate, maxDate } = globalDateRange;
+        if (!minDate || !maxDate) return 0;
+        const totalRange = maxDate - minDate;
+        const offset = parseDate(start) - minDate;
+        return (offset / totalRange) * 40; 
     };
 
+    /**
+     * Formats a date string from "YYYY-MM-DD" to "DD-MM".
+     * Used to display dates in a shorter format within the table.
+     */
     const formatDate = (dateString) => {
         const [year, month, day] = dateString.split('-');
         return `${day}-${month}`;
     };
 
+    /**
+     * Returns a color based on the status of a schedule item.
+     * Maps each possible status to a color, used in rendering Gantt bars.
+     */
     const getStatusColor = (status) => {
         switch (status) {
             case 'Completed':
@@ -75,29 +139,37 @@ const ElementSchedule = () => {
         }
     };
 
-    const renderGanttBar = (item, minDate) => {
-        const barWidth = calculateBarWidth(item.startDate, item.endDate) * 10;
-        const barPosition = calculateBarPosition(item.startDate, minDate) * 10;
+    /**
+     * Renders an individual Gantt bar for a schedule item.
+     * Scales and positions the bar within a 40vw container based on the item’s dates.
+     * Uses the status color to set the bar’s background color.
+     */
+    const renderGanttBar = (item) => {
+        const barWidth = calculateScaledBarWidth(item.startDate, item.endDate);
+        const barPosition = calculateScaledBarPosition(item.startDate);
+
         return (
             <div
-                className="gantt-bar"
-                style={{
-                    width: `${barWidth}px`,
-                    marginLeft: `${barPosition}px`,
-                    backgroundColor: getStatusColor(item.status) // Conditional color based on status
-                }}
-            ></div>
+                className="gantt-bar-container"
+                style={{ width: '40vw', display: 'flex', justifyContent: 'flex-start' }}
+            >
+                <div
+                    className="gantt-bar"
+                    style={{
+                        width: `${barWidth}vw`,
+                        marginLeft: `${barPosition}vw`,
+                        backgroundColor: getStatusColor(item.status),
+                    }}
+                ></div>
+            </div>
         );
     };
-
-    const minDate = getEarliestDate();
 
     return (
         <div>
             <h2>Schedule</h2>
             <p>This section contains information about the schedule for delivery.</p>
 
-            {/* Strategy Dropdown */}
             <label>Choose Strategy:</label>
             <select value={selectedStrategy} onChange={(e) => setSelectedStrategy(e.target.value)}>
                 <option value="">Select a strategy</option>
@@ -108,10 +180,9 @@ const ElementSchedule = () => {
                 ))}
             </select>
 
-            {/* Schedule Table with Gantt Chart Column */}
             <div className="table-container">
                 {selectedStrategy && scheduleByStrategy[selectedStrategy]?.length > 0 ? (
-                    <table className="scheduleTable">
+                    <table className="generalTable">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -153,7 +224,7 @@ const ElementSchedule = () => {
                                                 onChange={(e) => handleChange("startDate", e.target.value)}
                                             />
                                         ) : (
-                                            formatDate(item.startDate)  // Show "dd-mm"
+                                            formatDate(item.startDate)
                                         )}</td>
                                         <td>{editIndex === index ? (
                                             <input
@@ -162,7 +233,7 @@ const ElementSchedule = () => {
                                                 onChange={(e) => handleChange("endDate", e.target.value)}
                                             />
                                         ) : (
-                                            formatDate(item.endDate)  // Show "dd-mm"
+                                            formatDate(item.endDate)
                                         )}</td>
                                         <td>{editIndex === index ? (
                                             <select
@@ -188,7 +259,11 @@ const ElementSchedule = () => {
                                                 </button>
                                             </>
                                         )}</td>
-                                        <td>{renderGanttBar(item, minDate)}</td>
+                                        <td>
+                                            <div className="gantt-bar-container">
+                                                {renderGanttBar(item)}
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))}
                         </tbody>
@@ -198,7 +273,6 @@ const ElementSchedule = () => {
                 )}
             </div>
 
-            {/* Form to Add New Schedule Item */}
             <div className="rowContainer">
                 <h2>Enter schedule items for implementation: </h2>
                 <label>Title:</label>

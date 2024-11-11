@@ -72,7 +72,6 @@ const RisksAndIssues = () => {
       <h2>Risks and Issues</h2>
       <p>This section contains information about risks and issues.</p>
       
-      {/* Strategy Dropdown */}
       <label>Choose Strategy:</label>
       <select
         value={selectedStrategy}
@@ -86,103 +85,106 @@ const RisksAndIssues = () => {
         ))}
       </select>
 
-      {/* Input Table */}
-      <table className="scheduleTable">
-        <thead>
-          <tr>
-            <th>Intervention Title</th>
-            <th>Risk or Issue</th>
-            <th>Description</th>
-            <th>Likelihood</th>
-            <th>Impact</th>
-            <th>Mitigation</th>
-            <th>Post-Mitigation Likelihood</th>
-            <th>Post-Mitigation Impact</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              <td>
-                <input
-                  type="text"
-                  value={row.interventionTitle}
-                  onChange={(e) => handleInputChange(index, 'interventionTitle', e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  value={row.riskOrIssue}
-                  onChange={(e) => handleInputChange(index, 'riskOrIssue', e.target.value)}
-                >
-                  <option value="Risk">Risk</option>
-                  <option value="Issue">Issue</option>
-                </select>
-              </td>
-              <td>
-                <textarea
-                  value={row.description}
-                  onChange={(e) => handleInputChange(index, 'description', e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  value={row.likelihood}
-                  onChange={(e) => handleInputChange(index, 'likelihood', e.target.value)}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </td>
-              <td>
-                <select
-                  value={row.impact}
-                  onChange={(e) => handleInputChange(index, 'impact', e.target.value)}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </td>
-              <td>
-                <textarea
-                  value={row.mitigation}
-                  onChange={(e) => handleInputChange(index, 'mitigation', e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  value={row.postMitigationLikelihood}
-                  onChange={(e) => handleInputChange(index, 'postMitigationLikelihood', e.target.value)}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </td>
-              <td>
-                <select
-                  value={row.postMitigationImpact}
-                  onChange={(e) => handleInputChange(index, 'postMitigationImpact', e.target.value)}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={row.comment}
-                  onChange={(e) => handleInputChange(index, 'comment', e.target.value)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+     {/* Input Form */}
+     <form className="rowContainer" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+       {rows.map((row, index) => (
+         <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+           <label>
+             Intervention Title:
+             <input
+               type="text"
+               value={row.interventionTitle}
+               onChange={(e) => handleInputChange(index, 'interventionTitle', e.target.value)}
+             />
+           </label>
+           
+           <label>
+             Risk or Issue:
+             <select
+               value={row.riskOrIssue}
+               onChange={(e) => handleInputChange(index, 'riskOrIssue', e.target.value)}
+             >
+               <option value="Risk">Risk</option>
+               <option value="Issue">Issue</option>
+             </select>
+           </label>
+
+           <label>
+             Description:
+             <textarea
+               value={row.description}
+               onChange={(e) => handleInputChange(index, 'description', e.target.value)}
+             />
+           </label>
+
+           <label>
+             Likelihood:
+             <select
+               value={row.likelihood}
+               onChange={(e) => handleInputChange(index, 'likelihood', e.target.value)}
+             >
+               <option value="Low">Low</option>
+               <option value="Medium">Medium</option>
+               <option value="High">High</option>
+             </select>
+           </label>
+
+           <label>
+             Impact:
+             <select
+               value={row.impact}
+               onChange={(e) => handleInputChange(index, 'impact', e.target.value)}
+             >
+               <option value="Low">Low</option>
+               <option value="Medium">Medium</option>
+               <option value="High">High</option>
+             </select>
+           </label>
+
+           <label>
+             Mitigation:
+             <textarea
+               value={row.mitigation}
+               onChange={(e) => handleInputChange(index, 'mitigation', e.target.value)}
+             />
+           </label>
+
+           <label>
+             Post-Mitigation Likelihood:
+             <select
+               value={row.postMitigationLikelihood}
+               onChange={(e) => handleInputChange(index, 'postMitigationLikelihood', e.target.value)}
+             >
+               <option value="Low">Low</option>
+               <option value="Medium">Medium</option>
+               <option value="High">High</option>
+             </select>
+           </label>
+
+           <label>
+             Post-Mitigation Impact:
+             <select
+               value={row.postMitigationImpact}
+               onChange={(e) => handleInputChange(index, 'postMitigationImpact', e.target.value)}
+             >
+               <option value="Low">Low</option>
+               <option value="Medium">Medium</option>
+               <option value="High">High</option>
+             </select>
+           </label>
+
+           <label>
+             Comment:
+             <input
+               type="text"
+               value={row.comment}
+               onChange={(e) => handleInputChange(index, 'comment', e.target.value)}
+             />
+           </label>
+         </div>
+       ))}
+     </form>
+
       
       <button onClick={addRow}>Add Row</button>
       <button onClick={handleSave} disabled={!selectedStrategy}>Save</button>
@@ -191,7 +193,7 @@ const RisksAndIssues = () => {
       {selectedStrategy && risksAndIssuesByStrategy[selectedStrategy]?.length > 0 && (
         <div>
           <h3>Saved Risks and Issues for Selected Strategy</h3>
-          <table className="scheduleTable">
+          <table className="generalTable">
             <thead>
               <tr>
                 <th>Intervention Title</th>
